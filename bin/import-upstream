@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# bin/import-upstream VERSION LISTMONK_BINARY
+# Copy listmonk's own page templates, public stylesheet and email templates
+# out of a release binary (stuffbin appends its static files as a zip) into
+# upstream/VERSION/, laid out as --static-dir expects them: public/templates,
+# public/static/style.css, email-templates. These are the originals the
+# theme's files start from. On a listmonk upgrade, import the new version
+# and `diff -r upstream/OLD upstream/NEW` to see what to carry over.
+# THEME_ROOT overrides the repo root (for tests).
+set -euo pipefail
+
+usage() { echo "Usage: bin/import-upstream VERSION LISTMONK_BINARY" >&2; exit 2; }
+(( $# == 2 )) || usage
+version="$1" bin="$2"
+root="${THEME_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
+dest="$root/upstream/$version"
+
+[ ! -e "$dest" ] || { echo "import-upstream: $dest already exists" >&2; exit 1; }
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+# unzip exits 1 for its warning about the executable's leading bytes, and
+# strips the leading / from the stored names.
+rc=0
+unzip -q "$bin" '/public/templates/*' '/public/static/style.css' '/static/email-templates/*' \
+  -d "$tmp/x" 2>/dev/null || rc=$?
+if (( rc > 1 )) || [ ! -d "$tmp/x/public/templates" ]; then
+  echo "import-upstream: no listmonk templates embedded in $bin" >&2
+  exit 1
+fi
+
+mkdir -p "$tmp/out/public/static"
+mv "$tmp/x/public/templates" "$tmp/out/public/templates"
+mv "$tmp/x/public/static/style.css" "$tmp/out/public/static/style.css"
+mv "$tmp/x/static/email-templates" "$tmp/out/email-templates"
+mkdir -p "$root/upstream"
+mv "$tmp/out" "$dest"
+echo "imported listmonk $version's templates into upstream/$version"
