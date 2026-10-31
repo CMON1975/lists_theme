@@ -2,18 +2,17 @@
   The opt-in email a new subscriber gets. Its button opens the opt-in page,
   whose own button confirms (a scanner that follows the link confirms
   nothing). The greeting and request are the owner's words, in place of
-  listmonk's welcome, list of lists and help line; the title, button and
-  unsubscribe link are listmonk's (L.Ts). The name is listmonk's: without
-  one given, the part of the address before the @.
+  listmonk's welcome, list of lists and help line; the title and button
+  are listmonk's (L.Ts). The name is listmonk's: without one given, the
+  part of the address before the @. No unsubscribe link: nobody is
+  subscribed yet, and ignoring the email is the way out.
 */}}
 {{ define "subscriber-optin" }}
 {{ template "header" . }}
 <h1 style="margin: 0 0 20px; font-size: 32px; font-weight: normal; font-style: italic; line-height: 1.15; text-align: center; color: #15130f;">{{ L.Ts "email.optin.confirmSubTitle" }}</h1>
 <p style="margin: 0 0 14px;">Hello, {{ .Subscriber.FirstName }},</p>
 <p style="margin: 0 0 14px;">Please confirm your subscription to the CMON1975 mailing list by clicking the button below.</p>
-<p style="margin: 26px 0; text-align: center;">
+<p style="margin: 26px 0 28px; text-align: center;">
 	<a href="{{ .OptinURL }}" class="button" style="display: inline-block; padding: 10px 26px; border: 1px solid #2b2723; color: #15130f; font-size: 17px; font-variant: small-caps; letter-spacing: 0.08em; text-decoration: none;">{{ L.Ts "email.optin.confirmSub" }}</a>
-</p>
-<p style="margin: 0 0 28px; text-align: center; font-size: 15px;"><a href="{{ .UnsubURL }}?manage=true" style="color: #6e665a;">{{ L.T "email.unsub" }}</a></p>
-{{ template "footer" }}
+</p>{{ template "footer" }}
 {{ end }}

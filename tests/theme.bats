@@ -108,10 +108,12 @@ PY
   head -c 256 "$STATIC/email-templates/base.html" | grep -qi '<!doctype html'
 }
 
-@test "the opt-in email's button opens the opt-in page, and it links to unsubscribing" {
+@test "the opt-in email's button opens the opt-in page, and it offers no unsubscribing" {
+  # Not yet subscribed, so an unsubscribe link only muddles the one ask;
+  # ignoring the email is the way out (decision 2026-10-31).
   f="$STATIC/email-templates/subscriber-optin.html"
   grep -q 'href="{{ .OptinURL }}"' "$f"
-  grep -q 'href="{{ .UnsubURL }}?manage=true"' "$f"
+  ! grep -qE 'UnsubURL|email\.unsub' "$f"
 }
 
 @test "the opt-in email greets by name and asks in the owner's words" {
