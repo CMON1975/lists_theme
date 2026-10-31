@@ -114,6 +114,16 @@ PY
   grep -q 'href="{{ .UnsubURL }}?manage=true"' "$f"
 }
 
+@test "the opt-in email greets by name and asks in the owner's words" {
+  # The owner's wording (2026-10-31), in place of listmonk's welcome, list
+  # of lists and help line. The name is listmonk's: without one given, the
+  # part of the address before the @.
+  f="$STATIC/email-templates/subscriber-optin.html"
+  grep -qF '>Hello, {{ .Subscriber.FirstName }},</p>' "$f"
+  grep -qF '>Please confirm your subscription to the CMON1975 mailing list by clicking the button below.</p>' "$f"
+  ! grep -qE 'confirmSubWelcome|confirmSubInfo|confirmSubHelp|range \$i, \$l := \.Lists' "$f"
+}
+
 @test "the emails' colors are the site's paper palette, written out" {
   # Mail clients don't support CSS variables, so the light theme's tokens
   # (cmon1975.com site/book.css, body.theme-light) appear as hex: paper,
