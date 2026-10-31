@@ -1,0 +1,15 @@
+{{/*
+  A one-off message: "check your email", "subscribed", "unsubscribed",
+  and listmonk's errors. listmonk supplies the title and the text.
+*/}}
+{{ define "message" }}
+{{ template "header" . }}
+<header class="page-header">
+	<h1>{{ .Data.Title }}</h1>
+</header>
+<div class="message">
+	{{ .Data.Message }}
+</div>
+<p class="back"><a href="https://cmon1975.com/">Back to cmon1975.com</a></p>
+{{ template "footer" . }}
+{{ end }}

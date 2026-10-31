@@ -9,7 +9,7 @@ Most of these files are modified copies of listmonk's own templates. Like listmo
 listmonk is started with `--static-dir` pointing at `static/`. Any file found there replaces listmonk's built-in copy of the same name, and every other file keeps listmonk's default. listmonk reads these files only at startup, so a change shows after a restart or an app reload.
 
 - `static/public/templates/`: the public pages (signup form, opt-in confirmation, unsubscribe and preferences, messages) and the layout they share.
-- `static/public/static/`: the stylesheet and anything it loads.
+- `static/public/static/`: the stylesheet and anything it loads. The fonts in `fonts/` are EB Garamond, under the SIL Open Font License (`fonts/OFL-ebgaramond.txt`).
 - `static/email-templates/`: the opt-in email and the frame around listmonk's system emails.
 
 ## Upstream originals

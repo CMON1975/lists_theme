@@ -1,0 +1,317 @@
+/* The CMON1975 mailing list's pages (lists.cmon1975.com), set like
+   cmon1975.com's book pages: its dark paper, ink and rules (the --book-*
+   tokens from the site's site/book.css), EB Garamond, a 6-inch column, a
+   small-caps running head, and outlined small-caps buttons.
+
+   This replaces listmonk's public/static/style.css, so it styles every
+   page that wears the layout (templates/index.html), listmonk's own admin
+   login pages included. */
+
+/* EB Garamond, self-hosted as on the site (SIL OFL, fonts/OFL-ebgaramond.txt).
+   With unicode-range the browser fetches a file only when the page holds a
+   character in its range. Bump ?v= when a file changes, here and in the
+   layout's preload. */
+@font-face {
+    font-family: 'EB Garamond';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/eb-garamond-normal-latin.woff2?v=1') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'EB Garamond';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/eb-garamond-normal-latin-ext.woff2?v=1') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: 'EB Garamond';
+    font-style: italic;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/eb-garamond-italic-latin.woff2?v=1') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'EB Garamond';
+    font-style: italic;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('fonts/eb-garamond-italic-latin-ext.woff2?v=1') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------- Tokens ----------
+   The site's dark theme, its default. --book-size is the site's running
+   text size for EB Garamond. */
+:root {
+    --book-paper: #0b0b0a;
+    --book-ink: #ddd7cb;
+    --book-ink-strong: #f4efe5;
+    --book-muted: #9a9284;
+    --book-rule: #3b3731;
+    --book-size: 20px;
+    color-scheme: dark;
+}
+
+html {
+    background-color: var(--book-paper);
+}
+
+body {
+    margin: 0;
+    background-color: var(--book-paper);
+    color: var(--book-ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: var(--book-size);
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- The page ----------
+   The site's column: 152.4 mm (a 6-inch trade paperback) with half-inch
+   margins, and a book's narrow margins on a phone. */
+.page {
+    max-width: 152.4mm;
+    margin: 0 auto;
+    padding: 2.25mm 12.7mm 24px;
+}
+
+@media only screen and (max-width: 768px) {
+    .page {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+}
+
+.running-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 10px 0 28px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--book-rule);
+    font-size: 14px;
+    font-variant: small-caps;
+    letter-spacing: 0.14em;
+    color: var(--book-muted);
+}
+
+.running-head a:is(:link, :visited) {
+    color: inherit;
+    text-decoration: none;
+}
+
+.running-head a:hover {
+    color: var(--book-ink-strong);
+}
+
+/* ---------- Type ---------- */
+a {
+    color: inherit;
+    text-decoration-color: var(--book-muted);
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    color: var(--book-ink-strong);
+}
+
+p {
+    margin: 0 0 0.9em;
+}
+
+/* The page's title, as a post's: centered italic at twice the text size. */
+.page-header {
+    margin: 0 0 24px;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: calc(var(--book-size) * 2);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.12;
+    color: var(--book-ink-strong);
+    overflow-wrap: break-word;
+}
+
+/* listmonk's own pages (login and the like) title themselves with h2. */
+h2 {
+    margin: 0 0 20px;
+    font-size: calc(var(--book-size) * 1.5);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--book-ink-strong);
+}
+
+h3 {
+    margin: 24px 0 8px;
+    font-size: var(--book-size);
+    font-weight: 400;
+    font-variant: small-caps;
+    letter-spacing: 0.1em;
+    color: var(--book-ink-strong);
+}
+
+/* A short message (subscribed, confirmed, an error) under its title,
+   centered like the title. */
+.message {
+    text-align: center;
+}
+
+.back {
+    margin-top: 32px;
+    text-align: center;
+    font-style: italic;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.small {
+    font-size: 16px;
+}
+
+.error {
+    font-style: italic;
+    color: var(--book-ink-strong);
+}
+
+/* ---------- Forms ----------
+   Drawn like the site's login and signup forms: a ruled box and an
+   outlined small-caps button. 18px keeps iOS from zooming on focus. */
+form {
+    max-width: 26em;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 15px;
+    font-variant: small-caps;
+    letter-spacing: 0.1em;
+    color: var(--book-muted);
+}
+
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--book-rule);
+    border-radius: 0;
+    background: transparent;
+    color: var(--book-ink-strong);
+    font-family: inherit;
+    font-size: 18px;
+    outline: none;
+}
+
+input::placeholder {
+    color: var(--book-muted);
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: var(--book-muted);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    margin: 0 8px 0 0;
+    accent-color: var(--book-ink);
+}
+
+/* A checkbox's or radio's label sits beside it, in the text's own style. */
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+    display: inline;
+    font-size: inherit;
+    font-variant: normal;
+    letter-spacing: normal;
+    color: var(--book-ink);
+}
+
+button,
+.button {
+    display: inline-block;
+    padding: 8px 22px;
+    border: 1px solid var(--book-ink);
+    border-radius: 0;
+    background: transparent;
+    color: var(--book-ink-strong);
+    font-family: inherit;
+    font-size: 18px;
+    font-variant: small-caps;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover,
+button:focus-visible,
+.button:hover,
+.button:focus-visible {
+    border-color: var(--book-ink-strong);
+    color: var(--book-ink-strong);
+}
+
+.actions {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.lists {
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+}
+
+.description {
+    margin: 0;
+    font-style: italic;
+    color: var(--book-muted);
+}
+
+/* listmonk drops a signup whose "nonce" field is filled, which only a bot
+   does: the field stays in the form, off screen. */
+.nonce {
+    position: absolute;
+    left: -5000px;
+}
+
+/* ---------- Footer ----------
+   As the site's: small caps in the muted ink. */
+.colophon {
+    padding: 0 22px 48px;
+    text-align: center;
+    font-size: 13px;
+    font-variant: small-caps;
+    letter-spacing: 0.14em;
+    color: var(--book-muted);
+}
+
+.colophon a:is(:link, :visited) {
+    color: inherit;
+}
+
+.colophon a:hover {
+    color: var(--book-ink-strong);
+}

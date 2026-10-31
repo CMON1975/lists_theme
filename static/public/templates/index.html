@@ -1,0 +1,34 @@
+{{/*
+  The layout every public page wears (and listmonk's admin login pages):
+  "header" opens the page, "footer" closes it. Set like a cmon1975.com
+  page: the CMON1975 running head over a rule, then the page's own title
+  and text, then the colophon. Replaces listmonk's templates/index.html;
+  upstream/<version>/public/templates/index.html is the original.
+*/}}
+{{ define "header" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{ .Data.Title }} · {{ .SiteName }}</title>
+	<meta name="description" content="{{ .Data.Description }}">
+	<link rel="preload" href="/public/static/fonts/eb-garamond-normal-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" href="/public/static/style.css?v={{ .AssetVersion }}">
+	<link rel="icon" href="https://media.cmon1975.com/images/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+	<link rel="icon" href="https://media.cmon1975.com/images/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+	<link rel="apple-touch-icon" href="https://media.cmon1975.com/images/icons/apple-icon-180x180.png" sizes="180x180">
+</head>
+<body>
+	<main class="page">
+		<div class="running-head"><a href="https://cmon1975.com/">CMON1975</a><span>Mailing list</span></div>
+{{ end }}
+
+{{ define "footer" }}
+	</main>
+	<footer class="colophon">
+		<p>Made with <a href="https://listmonk.app">listmonk</a> · <a href="https://github.com/CMON1975/lists_theme">source</a></p>
+	</footer>
+</body>
+</html>
+{{ end }}
