@@ -100,3 +100,31 @@ PY
   grep -q 'name="name" value="{{ .Data.Subscriber.Name }}"' "$f"
   grep -q 'name="l" value="{{ $l.UUID }}"' "$f"
 }
+
+@test "the email frame opens with <!doctype html> in its first 256 bytes, so listmonk sends its emails as HTML" {
+  # listmonk (cmd/init.go, initNotifs) sniffs base.html's first 256 bytes
+  # for "<!doctype html" and otherwise sends every system email, the
+  # opt-in email included, as text/plain: the markup shows as text.
+  head -c 256 "$STATIC/email-templates/base.html" | grep -qi '<!doctype html'
+}
+
+@test "the opt-in email's button opens the opt-in page, and it links to unsubscribing" {
+  f="$STATIC/email-templates/subscriber-optin.html"
+  grep -q 'href="{{ .OptinURL }}"' "$f"
+  grep -q 'href="{{ .UnsubURL }}?manage=true"' "$f"
+}
+
+@test "the emails' colors are the site's paper palette, written out" {
+  # Mail clients don't support CSS variables, so the light theme's tokens
+  # (cmon1975.com site/book.css, body.theme-light) appear as hex: paper,
+  # ink, ink-strong, muted, rule. Light, because a dark email turns
+  # unreadable in clients that invert colors for their dark mode.
+  colors="$(grep -ohi '#[0-9a-f]\{6\}\b' "$STATIC"/email-templates/*.html | tr 'A-F' 'a-f' | sort -u)"
+  [ -n "$colors" ]
+  while read -r c; do
+    case "$c" in
+      '#f9f6f0'|'#2b2723'|'#15130f'|'#6e665a'|'#cdc4b4') ;;
+      *) echo "off-palette $c"; return 1 ;;
+    esac
+  done <<<"$colors"
+}

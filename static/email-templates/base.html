@@ -1,0 +1,53 @@
+{{ define "header" }}
+<!doctype html>
+{{/*
+  The doctype stays in this file's first 256 bytes: listmonk sniffs them
+  and sends every system email as plain text without it.
+
+  The frame around listmonk's own emails: the opt-in email subscribers get,
+  and the system notices (import done, campaign finished, password reset)
+  only the admin gets. Newsletters don't use it; their layout is
+  cmon1975.com's php/newsletter.php.
+
+  Set like a cmon1975.com page in its light paper theme: dark email turns
+  unreadable in clients that invert colors for their own dark mode. Styles
+  are inline, in tables, because many mail clients drop <style> blocks;
+  the <style> block repeats them for the clients that keep it. EB Garamond
+  shows where it's installed, Georgia elsewhere.
+*/}}
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="color-scheme" content="light">
+	<meta name="supported-color-schemes" content="light">
+	<base target="_blank">
+	<style>
+		body { margin: 0; background-color: #f9f6f0; color: #2b2723; }
+		a { color: #2b2723; text-decoration-color: #6e665a; }
+		.button { color: #15130f !important; }
+		img { max-width: 100%; }
+	</style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f9f6f0; color: #2b2723;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f9f6f0;">
+<tr><td align="center" style="padding: 32px 20px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 520px; font-family: 'EB Garamond', Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.55; color: #2b2723;">
+	<tr>
+		<td style="padding: 0 0 6px; border-bottom: 1px solid #cdc4b4; font-size: 13px; letter-spacing: 0.14em; color: #6e665a;"><a href="https://cmon1975.com/" style="color: #6e665a; text-decoration: none;">CMON1975</a></td>
+		<td align="right" style="padding: 0 0 6px; border-bottom: 1px solid #cdc4b4; font-size: 13px; letter-spacing: 0.14em; font-variant: small-caps; color: #6e665a;">Mailing list</td>
+	</tr>
+	<tr><td colspan="2" style="padding: 28px 0 0;">
+{{ end }}
+
+{{ define "footer" }}
+	</td></tr>
+	<tr>
+		<td colspan="2" align="center" style="padding: 28px 0 0; border-top: 1px solid #cdc4b4; font-size: 13px; letter-spacing: 0.14em; font-variant: small-caps; color: #6e665a;"><a href="https://cmon1975.com/" style="color: #6e665a;">cmon1975.com</a></td>
+	</tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>
+{{ end }}

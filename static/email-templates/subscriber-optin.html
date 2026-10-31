@@ -1,0 +1,26 @@
+{{/*
+  The opt-in email a new subscriber gets. Its button opens the opt-in page,
+  whose own button confirms (a scanner that follows the link confirms
+  nothing). Wording is listmonk's own (L.Ts).
+*/}}
+{{ define "subscriber-optin" }}
+{{ template "header" . }}
+<h1 style="margin: 0 0 20px; font-size: 32px; font-weight: normal; font-style: italic; line-height: 1.15; text-align: center; color: #15130f;">{{ L.Ts "email.optin.confirmSubTitle" }}</h1>
+<p style="margin: 0 0 14px;">{{ L.Ts "email.optin.confirmSubWelcome" }} {{ .Subscriber.FirstName }},</p>
+<p style="margin: 0 0 6px;">{{ L.Ts "email.optin.confirmSubInfo" }}</p>
+<ul style="margin: 0 0 14px; padding-left: 24px;">
+	{{ range $i, $l := .Lists }}
+		{{ if eq .Type "public" }}
+			<li>{{ .Name }}</li>
+		{{ else }}
+			<li>{{ L.Ts "email.optin.privateList" }}</li>
+		{{ end }}
+	{{ end }}
+</ul>
+<p style="margin: 0 0 14px;">{{ L.Ts "email.optin.confirmSubHelp" }}</p>
+<p style="margin: 26px 0; text-align: center;">
+	<a href="{{ .OptinURL }}" class="button" style="display: inline-block; padding: 10px 26px; border: 1px solid #2b2723; color: #15130f; font-size: 17px; font-variant: small-caps; letter-spacing: 0.08em; text-decoration: none;">{{ L.Ts "email.optin.confirmSub" }}</a>
+</p>
+<p style="margin: 0 0 28px; text-align: center; font-size: 15px;"><a href="{{ .UnsubURL }}?manage=true" style="color: #6e665a;">{{ L.T "email.unsub" }}</a></p>
+{{ template "footer" }}
+{{ end }}
