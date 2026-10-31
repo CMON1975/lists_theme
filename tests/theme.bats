@@ -73,3 +73,30 @@ PY
   done <<<"$fonts"
   [ -f "$STATIC/public/static/fonts/OFL-ebgaramond.txt" ]
 }
+
+# The form fields listmonk's handlers read (cmd/public.go): a page that
+# stops posting one breaks signing up, confirming or unsubscribing.
+
+@test "the signup form posts email, name, the lists and the nonce honeypot back to itself" {
+  f="$STATIC/public/templates/subscription-form.html"
+  grep -q '<form method="post" action=""' "$f"
+  for field in email name l nonce; do
+    grep -q "name=\"$field\"" "$f" || { echo "no $field field"; return 1; }
+  done
+  grep -q 'name="nonce" class="nonce"' "$f"
+}
+
+@test "the opt-in page posts each list back with confirm=true" {
+  f="$STATIC/public/templates/optin.html"
+  grep -q '<form method="post"' "$f"
+  grep -q 'name="l" value="{{ $l.UUID }}"' "$f"
+  grep -q 'name="confirm" value="true"' "$f"
+}
+
+@test "the unsubscribe page posts its form, and the preferences page manage=true, the name and the lists kept" {
+  f="$STATIC/public/templates/subscription.html"
+  [ "$(grep -c '<form method="post"' "$f")" -ge 2 ]
+  grep -q 'name="manage" value="true"' "$f"
+  grep -q 'name="name" value="{{ .Data.Subscriber.Name }}"' "$f"
+  grep -q 'name="l" value="{{ $l.UUID }}"' "$f"
+}

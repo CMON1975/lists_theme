@@ -1,0 +1,116 @@
+{{/*
+  /subscription/<campaign>/<subscriber>: the unsubscribe page (the email
+  footer's "unsubscribe" link), or with ?manage=true the preferences page
+  ("update your preferences"). Privacy and data (export, wipe) follows
+  either when the settings allow it. Wording is listmonk's own (L.T).
+*/}}
+{{ define "subscription" }}
+{{ template "header" . }}
+{{ if not .Data.ShowManage }}
+	<header class="page-header">
+		<h1>{{ L.T "public.unsubTitle" }}</h1>
+	</header>
+
+	<form method="post" class="unsub-form">
+		<p class="center">{{ L.T "public.unsubHelp" }}</p>
+		{{ if .Data.AllowBlocklist }}
+			<p>
+				<input id="privacy-blocklist" type="checkbox" name="blocklist" value="true">
+				<label for="privacy-blocklist">{{ L.T "public.unsubFull" }}</label>
+			</p>
+		{{ end }}
+		<p class="actions"><button type="submit" id="btn-unsub">{{ L.T "public.unsub" }}</button></p>
+		{{ if .Data.AllowPreferences }}
+			<p class="center small"><a href="?manage=true">{{ L.T "public.managePrefs" }}</a></p>
+		{{ end }}
+	</form>
+{{ else }}
+	<header class="page-header">
+		<h1>{{ L.T "public.managePrefs" }}</h1>
+	</header>
+
+	<form method="post" class="manage-form">
+		<input type="hidden" name="manage" value="true">
+		<p>
+			<label for="name">{{ L.T "globals.fields.name" }}</label>
+			<input id="name" type="text" name="name" value="{{ .Data.Subscriber.Name }}" maxlength="256" required>
+		</p>
+
+		{{ if .Data.Subscriptions }}
+			<h3>{{ L.T "globals.terms.lists" }}</h3>
+			<p class="description">{{ L.T "public.managePrefsUnsub" }}</p>
+			<ul class="lists">
+				{{ range $i, $l := .Data.Subscriptions }}
+					{{ if ne $l.SubscriptionStatus.Value "unsubscribed" }}
+						<li>
+							<input id="l-{{ $l.UUID }}" type="checkbox" name="l" value="{{ $l.UUID }}" checked>
+							<label for="l-{{ $l.UUID }}">{{ $l.Name }}</label>
+						</li>
+					{{ end }}
+				{{ end }}
+			</ul>
+		{{ end }}
+
+		{{ if .Data.AllowBlocklist }}
+			<p>
+				<input id="privacy-blocklist" type="checkbox" name="blocklist" value="true" onchange="unsubAll(event)">
+				<label for="privacy-blocklist">{{ L.T "public.unsubFull" }}</label>
+			</p>
+		{{ end }}
+
+		<p class="actions"><button type="submit" id="btn-unsub">{{ L.T "globals.buttons.save" }}</button></p>
+	</form>
+{{ end }}
+
+{{ if or .Data.AllowExport .Data.AllowWipe }}
+	<form id="data-form" class="data-form" method="post" action="" onsubmit="return handleData()">
+		<h3>{{ L.T "public.privacyTitle" }}</h3>
+		{{ if .Data.AllowExport }}
+			<p>
+				<input id="privacy-export" type="radio" name="data-action" value="export" required>
+				<label for="privacy-export">{{ L.T "public.privacyExport" }}</label>
+				<br><span class="description">{{ L.T "public.privacyExportHelp" }}</span>
+			</p>
+		{{ end }}
+		{{ if .Data.AllowWipe }}
+			<p>
+				<input id="privacy-wipe" type="radio" name="data-action" value="wipe" required>
+				<label for="privacy-wipe">{{ L.T "public.privacyWipe" }}</label>
+				<br><span class="description">{{ L.T "public.privacyWipeHelp" }}</span>
+			</p>
+		{{ end }}
+		<p class="actions"><button type="submit">{{ L.T "globals.buttons.continue" }}</button></p>
+	</form>
+	<script>
+		function handleData() {
+			var a = document.querySelector('input[name="data-action"]:checked').value,
+				f = document.querySelector("#data-form");
+			if (a == "export") {
+				f.action = "/subscription/export/{{ .Data.SubUUID }}";
+				return true;
+			} else if (confirm("{{ L.T "public.privacyConfirmWipe" }}")) {
+				f.action = "/subscription/wipe/{{ .Data.SubUUID }}";
+				return true;
+			}
+			return false;
+		}
+
+		function unsubAll(e) {
+			if (e.target.checked) {
+				document.querySelector("input[name=name]").disabled = "disabled";
+			} else {
+				document.querySelector("input[name=name]").removeAttribute("disabled");
+			}
+
+			document.querySelectorAll('input[type=checkbox][name=l]').forEach(function(l) {
+				if (e.target.checked) {
+					l.disabled = "disabled";
+				} else {
+					l.removeAttribute("disabled");
+				}
+			});
+		}
+	</script>
+{{ end }}
+{{ template "footer" . }}
+{{ end }}

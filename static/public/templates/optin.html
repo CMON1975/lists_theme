@@ -1,0 +1,25 @@
+{{/*
+  The opt-in confirmation at /subscription/optin/<subscriber>, the page the
+  opt-in email's button opens. Its own button confirms: a link alone must
+  not, or mail scanners that fetch every link would confirm signups no
+  one made. Wording is listmonk's own (L.T).
+*/}}
+{{ define "optin" }}
+{{ template "header" . }}
+<header class="page-header">
+	<h1>{{ L.T "public.confirmOptinSubTitle" }}</h1>
+</header>
+
+<form method="post" class="optin-form">
+	<p class="center">{{ L.T "public.confirmSubInfo" }}</p>
+	{{ range $i, $l := .Data.Lists }}<input type="hidden" name="l" value="{{ $l.UUID }}">{{ end }}
+	<ul class="lists center">
+		{{ range $i, $l := .Data.Lists }}
+			<li>{{ if eq $l.Type "public" }}{{ $l.Name }}{{ else }}{{ L.Ts "public.subPrivateList" }}{{ end }}</li>
+		{{ end }}
+	</ul>
+	<input type="hidden" name="confirm" value="true">
+	<p class="actions"><button type="submit">{{ L.Ts "public.confirmSub" }}</button></p>
+</form>
+{{ template "footer" . }}
+{{ end }}
