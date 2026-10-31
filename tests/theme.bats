@@ -121,7 +121,7 @@ PY
   # of lists and help line. The name is listmonk's: without one given, the
   # part of the address before the @.
   f="$STATIC/email-templates/subscriber-optin.html"
-  grep -qF '>Hello, {{ .Subscriber.FirstName }},</p>' "$f"
+  grep -qF '>Hello {{ .Subscriber.FirstName }},</p>' "$f"
   grep -qF '>Please confirm your subscription to the CMON1975 mailing list by clicking the button below.</p>' "$f"
   ! grep -qE 'confirmSubTitle|<h1|confirmSubWelcome|confirmSubInfo|confirmSubHelp|range \$i, \$l := \.Lists' "$f"
 }

@@ -9,7 +9,7 @@
 */}}
 {{ define "subscriber-optin" }}
 {{ template "header" . }}
-<p style="margin: 0 0 14px;">Hello, {{ .Subscriber.FirstName }},</p>
+<p style="margin: 0 0 14px;">Hello {{ .Subscriber.FirstName }},</p>
 <p style="margin: 0 0 14px;">Please confirm your subscription to the CMON1975 mailing list by clicking the button below.</p>
 <p style="margin: 26px 0 28px; text-align: center;">
 	<a href="{{ .OptinURL }}" class="button" style="display: inline-block; padding: 10px 26px; border: 1px solid #2b2723; color: #15130f; font-size: 17px; font-variant: small-caps; letter-spacing: 0.08em; text-decoration: none;">{{ L.Ts "email.optin.confirmSub" }}</a>
