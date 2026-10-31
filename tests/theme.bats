@@ -123,7 +123,7 @@ PY
   f="$STATIC/email-templates/subscriber-optin.html"
   grep -qF '>Hello, {{ .Subscriber.FirstName }},</p>' "$f"
   grep -qF '>Please confirm your subscription to the CMON1975 mailing list by clicking the button below.</p>' "$f"
-  ! grep -qE 'confirmSubWelcome|confirmSubInfo|confirmSubHelp|range \$i, \$l := \.Lists' "$f"
+  ! grep -qE 'confirmSubTitle|<h1|confirmSubWelcome|confirmSubInfo|confirmSubHelp|range \$i, \$l := \.Lists' "$f"
 }
 
 @test "the emails' colors are the site's paper palette, written out" {
