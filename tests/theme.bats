@@ -116,14 +116,28 @@ PY
   ! grep -qE 'UnsubURL|email\.unsub' "$f"
 }
 
-@test "the opt-in email greets by name and asks in the owner's words" {
+@test "the opt-in email asks in the owner's words" {
   # The owner's wording (2026-10-31), in place of listmonk's welcome, list
-  # of lists and help line. The name is listmonk's: without one given, the
-  # part of the address before the @.
+  # of lists and help line.
   f="$STATIC/email-templates/subscriber-optin.html"
-  grep -qF '>Hello {{ .Subscriber.FirstName }},</p>' "$f"
   grep -qF '>Please confirm your subscription to the CMON1975 mailing list by clicking the button below.</p>' "$f"
   ! grep -qE 'confirmSubTitle|<h1|confirmSubWelcome|confirmSubInfo|confirmSubHelp|range \$i, \$l := \.Lists' "$f"
+}
+
+@test "the opt-in email greets by the address alone, up to any +tag" {
+  # This email goes to an address before anyone has confirmed owning it, so
+  # it prints nothing the signup's sender chose: no stored name, no +tag.
+  f="$STATIC/email-templates/subscriber-optin.html"
+  grep -qF '>Hello {{ regexFind "^[^@+]+" .Subscriber.Email }},</p>' "$f"
+  ! grep -qE 'Subscriber\.(Name|FirstName|LastName)' "$f"
+}
+
+@test "a signup's result reads the same for every address, and other messages stay listmonk's" {
+  # listmonk words the result by the address's state; one reply keeps that
+  # state private. "public.subTitle" is the title of that page alone.
+  f="$STATIC/public/templates/message.html"
+  grep -qF '{{ if eq .Data.Title (L.T "public.subTitle") }}Thank you. If this address still needs confirming, an email is on its way.{{ else }}{{ .Data.Message }}{{ end }}' "$f"
+  [ "$(grep -c '\.Data\.Message' "$f")" -eq 1 ]
 }
 
 @test "the emails' colors are the site's paper palette, written out" {

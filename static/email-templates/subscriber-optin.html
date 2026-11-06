@@ -3,13 +3,15 @@
   whose own button confirms (a scanner that follows the link confirms
   nothing). The greeting and request are the owner's words, in place of
   listmonk's title, welcome, list of lists and help line; the button is
-  listmonk's (L.Ts). The name is listmonk's: without one given, the
-  part of the address before the @. No unsubscribe link: nobody is
-  subscribed yet, and ignoring the email is the way out.
+  listmonk's (L.Ts). The greeting is the part of the address before the
+  @ or any +tag, not the stored name: this goes to an address before
+  anyone has confirmed owning it, so it prints nothing the signup's
+  sender chose. No unsubscribe link: nobody is subscribed yet, and
+  ignoring the email is the way out.
 */}}
 {{ define "subscriber-optin" }}
 {{ template "header" . }}
-<p style="margin: 0 0 14px;">Hello {{ .Subscriber.FirstName }},</p>
+<p style="margin: 0 0 14px;">Hello {{ regexFind "^[^@+]+" .Subscriber.Email }},</p>
 <p style="margin: 0 0 14px;">Please confirm your subscription to the CMON1975 mailing list by clicking the button below.</p>
 <p style="margin: 26px 0 28px; text-align: center;">
 	<a href="{{ .OptinURL }}" class="button" style="display: inline-block; padding: 10px 26px; border: 1px solid #2b2723; color: #15130f; font-size: 17px; font-variant: small-caps; letter-spacing: 0.08em; text-decoration: none;">{{ L.Ts "email.optin.confirmSub" }}</a>

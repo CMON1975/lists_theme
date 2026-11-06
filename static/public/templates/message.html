@@ -1,6 +1,8 @@
 {{/*
-  A one-off message: "check your email", "subscribed", "unsubscribed",
-  and listmonk's errors. listmonk supplies the title and the text.
+  A one-off message: a signup's result, "subscribed", "unsubscribed", and
+  listmonk's errors. listmonk supplies the title and the text, except for
+  a signup's result, which it words by the address's state: one reply
+  here keeps that state private.
 */}}
 {{ define "message" }}
 {{ template "header" . }}
@@ -8,7 +10,7 @@
 	<h1>{{ .Data.Title }}</h1>
 </header>
 <div class="message">
-	{{ .Data.Message }}
+	{{ if eq .Data.Title (L.T "public.subTitle") }}Thank you. If this address still needs confirming, an email is on its way.{{ else }}{{ .Data.Message }}{{ end }}
 </div>
 <p class="back"><a href="https://cmon1975.com/">Back to cmon1975.com</a></p>
 {{ template "footer" . }}
