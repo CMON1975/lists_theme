@@ -118,13 +118,14 @@ PY
   grep -q 'name="confirm" value="true"' "$f"
 }
 
-@test "the opt-in page asks for the click in the owner's words" {
-  # The owner's wording (2026-11-21), in place of listmonk's "You have been
-  # added to the following lists:": the reader isn't on the list until this
-  # page's button confirms.
+@test "the opt-in page asks for the click in the owner's words, naming the list itself" {
+  # The owner's wording (2026-11-22), in place of listmonk's "You have been
+  # added to the following lists:" and the names under it: the reader isn't
+  # on the list until this page's button confirms, and the sentence names
+  # the one list. The lists still post back hidden.
   f="$STATIC/public/templates/optin.html"
-  grep -qF '>Click the button below to be added to the following list:</p>' "$f"
-  ! grep -q 'public.confirmSubInfo' "$f"
+  grep -qF '>Click the button below to join the CMON1975 mailing list:</p>' "$f"
+  ! grep -qE 'public\.confirmSubInfo|subPrivateList|\$l\.Name' "$f"
 }
 
 @test "the unsubscribe page posts its form, and the preferences page manage=true, the name and the lists kept" {

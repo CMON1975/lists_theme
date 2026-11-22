@@ -2,10 +2,11 @@
   The opt-in confirmation at /subscription/optin/<subscriber>, the page the
   opt-in email's button opens. Its own button confirms: a link alone must
   not, or mail scanners that fetch every link would confirm signups no
-  one made. The line above the list is the owner's words, in place of
-  listmonk's "You have been added to the following lists:", since the
-  reader isn't on the list until the button confirms; the rest of the
-  wording is listmonk's (L.T).
+  one made. The line over the button is the owner's words, in place of
+  listmonk's "You have been added to the following lists:" and the names
+  under it: the reader isn't on the list until the button confirms, and
+  the line names the one list. The lists still post back hidden. The rest
+  of the wording is listmonk's (L.T).
 */}}
 {{ define "optin" }}
 {{ template "header" . }}
@@ -14,13 +15,8 @@
 </header>
 
 <form method="post" class="optin-form">
-	<p class="center">Click the button below to be added to the following list:</p>
+	<p class="center">Click the button below to join the CMON1975 mailing list:</p>
 	{{ range $i, $l := .Data.Lists }}<input type="hidden" name="l" value="{{ $l.UUID }}">{{ end }}
-	<ul class="lists center">
-		{{ range $i, $l := .Data.Lists }}
-			<li>{{ if eq $l.Type "public" }}{{ $l.Name }}{{ else }}{{ L.Ts "public.subPrivateList" }}{{ end }}</li>
-		{{ end }}
-	</ul>
 	<input type="hidden" name="confirm" value="true">
 	<p class="actions"><button type="submit">{{ L.Ts "public.confirmSub" }}</button></p>
 </form>
