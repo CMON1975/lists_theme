@@ -278,6 +278,13 @@ button:focus-visible,
     text-align: center;
 }
 
+/* The captcha's box, centered over the button at its own width. .altcha
+   is the box listmonk's Altcha widget draws (its altcha.umd.js, as of
+   listmonk 6.2.0): recheck it on a listmonk bump. */
+.captcha .altcha {
+    margin: 0 auto;
+}
+
 .lists {
     margin: 0 0 16px;
     padding: 0;

@@ -74,6 +74,28 @@ PY
   [ -f "$STATIC/public/static/fonts/OFL-ebgaramond.txt" ]
 }
 
+@test "the captcha box is centered over the Subscribe button, at the widget's own width" {
+  # listmonk 6.2.0's Altcha widget (its altcha.umd.js) draws its box as
+  # .altcha, a block at most 260px wide, at the column's left, while
+  # .actions centers the button. Auto side margins center the box; the
+  # width stays the widget's. Recheck the class on a listmonk bump.
+  run python3 -I - "$STATIC/public/static/style.css" <<'PY'
+import re, sys
+css = re.sub(r"/\*.*?\*/", "", open(sys.argv[1]).read(), flags=re.S)
+body = "".join(b for sel, b in re.findall(r"([^{}]+)\{([^{}]*)\}", css)
+               if ".captcha .altcha" in [s.strip() for s in sel.split(",")])
+decls = {p: v.strip() for p, v in re.findall(r"([\w-]+)\s*:\s*([^;]+);", body)}
+margin = decls.get("margin", "").split()
+centered = (decls.get("margin-inline") == "auto"
+            or decls.get("margin-left") == decls.get("margin-right") == "auto"
+            or (len(margin) in (2, 3) and margin[1] == "auto"))
+sized = [p for p in decls if re.search(r"width|^flex", p)]
+print(f"no auto side margins on .captcha .altcha: {decls}" if not centered else f"sizes the box: {sized}" if sized else "")
+sys.exit(0 if centered and not sized else 1)
+PY
+  [ "$status" -eq 0 ]
+}
+
 # The form fields listmonk's handlers read (cmd/public.go): a page that
 # stops posting one breaks signing up, confirming or unsubscribing.
 
