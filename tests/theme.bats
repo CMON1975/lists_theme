@@ -15,6 +15,19 @@ replaced() {
   (cd "$STATIC" && find . -type f ! -path './public/static/fonts/*' | sed 's|^\./||' | sort)
 }
 
+# The declarations the stylesheet gives a selector (in a rule's selector
+# list, comments ignored), one "property: value" per line.
+css_decls() {
+  python3 -I - "$STATIC/public/static/style.css" "$1" <<'PY'
+import re, sys
+css = re.sub(r"/\*.*?\*/", "", open(sys.argv[1]).read(), flags=re.S)
+for sel, body in re.findall(r"([^{}]+)\{([^{}]*)\}", css):
+    if sys.argv[2] in [s.strip() for s in sel.split(",")]:
+        for prop, val in re.findall(r"([\w-]+)\s*:\s*([^;]+);", body):
+            print(f"{prop}: {val.strip()}")
+PY
+}
+
 # The names a template file defines with {{ define "..." }}, one per line.
 defines() {
   grep -o '{{ *define "[^"]*"' "$1" | sed 's/.*"\(.*\)"/\1/' | sort
@@ -97,6 +110,19 @@ if sized:
 sys.exit(0 if centered and not sized else 1)
 PY
   [ "$status" -eq 0 ]
+}
+
+@test "the captcha box is drawn like the theme's fields: ruled, square, its error like .error" {
+  # Altcha's own look is a grey rounded border, an ink focus border and red
+  # error text. Its --altcha-* properties take the fields' rule and focus
+  # colors and square corners; its error line (.altcha-error, the widget's
+  # own class: recheck on a listmonk bump) reads as the theme's .error.
+  captcha="$(css_decls '.captcha')"
+  grep -qxF -- '--altcha-color-border: var(--book-rule)' <<<"$captcha"
+  grep -qxF -- '--altcha-color-border-focus: var(--book-muted)' <<<"$captcha"
+  grep -qxF -- '--altcha-border-radius: 0' <<<"$captcha"
+  grep -qxF -- '--altcha-color-error-text: var(--book-ink-strong)' <<<"$captcha"
+  grep -qxF 'font-style: italic' <<<"$(css_decls '.captcha .altcha-error')"
 }
 
 # The form fields listmonk's handlers read (cmd/public.go): a page that
