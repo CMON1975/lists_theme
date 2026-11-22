@@ -40,7 +40,7 @@
 
 		{{ if .Data.Subscriptions }}
 			<h3>Mailing list</h3>
-			<p class="description">Uncheck the box below to unsubscribe from the CMON1975 mailing list.</p>
+			<p class="description">Uncheck the box below and press the save button to unsubscribe.</p>
 			<ul class="lists">
 				{{ range $i, $l := .Data.Subscriptions }}
 					{{ if ne $l.SubscriptionStatus.Value "unsubscribed" }}

@@ -149,12 +149,12 @@ PY
 }
 
 @test "the preferences page words its one list in the singular" {
-  # The wording the owner approved (2026-11-22), in place of listmonk's
-  # "Lists" and "Uncheck lists to unsubscribe from them.": there is only
-  # ever one list, and the opt-in page names it the same way.
+  # The owner's wording (2026-11-22), in place of listmonk's "Lists" and
+  # "Uncheck lists to unsubscribe from them.": there is only ever one list,
+  # and unchecking it does nothing until Save.
   f="$STATIC/public/templates/subscription.html"
   grep -qF '<h3>Mailing list</h3>' "$f"
-  grep -qF '>Uncheck the box below to unsubscribe from the CMON1975 mailing list.</p>' "$f"
+  grep -qF '>Uncheck the box below and press the save button to unsubscribe.</p>' "$f"
   ! grep -qE 'globals\.terms\.lists|public\.managePrefsUnsub' "$f"
 }
 
