@@ -27,3 +27,17 @@ Running log of work done with Claude Code.
 ## 2026-11-22 — Opt-in page names the list
 **What:** The user reworded the line to "Click the button below to join the CMON1975 mailing list:" and chose to drop the list's name under it, since the sentence names the list (6377a86). The lists still post back hidden. Shots: `E:\claude_review\lists_theme-optin-wording-2.png` and `lists_theme-optin-wording-375-2.png`, waiting for the user's OK.
 **Why:** With the list named in the sentence, the separate "CMON1975" line said the name twice.
+
+---
+## 2026-11-22 — Preferences page in the singular; Altcha box in the theme's look
+**What:**
+- The preferences page's "Lists" / "Uncheck lists to unsubscribe from them." now reads "Mailing list" / "Uncheck the box below to unsubscribe from the CMON1975 mailing list." (8cb5a5a).
+- The Altcha box is now drawn like the fields, through Altcha's own `--altcha-*` properties on `.captcha` (5069e07): the `--book-rule` border, a `--book-muted` focus border, square corners, and its error line in `--book-ink-strong` italic like `.error`.
+- A `css_decls` helper in theme.bats now serves both captcha tests (6405de2).
+- Shots in `E:\claude_review\`: `lists_theme-altcha-themed{,-375,-error}.png` and `lists_theme-prefs-wording{,-375}.png`. They wait for the user's OK.
+**Why:** The user asked to fix the plural wording and to bring the widget into the theme ("do what's necessary to sync theme").
+**Notes:**
+- Left out: "Your subscriptions and all associated data has been removed." Prod's settings.json turns off wipe and export, so that form and its message never show.
+- Only three of Altcha's colors can show in listmonk's inline widget: border, focus border and error text. The rest follow currentColor or belong to modes listmonk doesn't use (floating, overlay, code challenge).
+- The error-state shot came from a scratch copy of `static/` with `mockerror auto="onload"` on the widget, served through listmonk-dev's `LISTMONK_STATIC_DIR`.
+- Bash `-e` gotcha in bats: in `a || { b && c; }`, a failing `b` doesn't fail the test. The refactor's mutation check caught this, and the test now uses a single `[ … ]` after the `||`.
