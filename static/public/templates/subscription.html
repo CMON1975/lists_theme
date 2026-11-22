@@ -2,7 +2,9 @@
   /subscription/<campaign>/<subscriber>: the unsubscribe page (the email
   footer's "unsubscribe" link), or with ?manage=true the preferences page
   ("update your preferences"). Privacy and data (export, wipe) follows
-  either when the settings allow it. Wording is listmonk's own (L.T).
+  either when the settings allow it. The preferences page's list heading
+  and the line under it are the owner's words, in the singular since
+  there is only ever one list; the rest of the wording is listmonk's (L.T).
 */}}
 {{ define "subscription" }}
 {{ template "header" . }}
@@ -37,8 +39,8 @@
 		</p>
 
 		{{ if .Data.Subscriptions }}
-			<h3>{{ L.T "globals.terms.lists" }}</h3>
-			<p class="description">{{ L.T "public.managePrefsUnsub" }}</p>
+			<h3>Mailing list</h3>
+			<p class="description">Uncheck the box below to unsubscribe from the CMON1975 mailing list.</p>
 			<ul class="lists">
 				{{ range $i, $l := .Data.Subscriptions }}
 					{{ if ne $l.SubscriptionStatus.Value "unsubscribed" }}
