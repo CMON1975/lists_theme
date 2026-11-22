@@ -41,3 +41,8 @@ Running log of work done with Claude Code.
 - Only three of Altcha's colors can show in listmonk's inline widget: border, focus border and error text. The rest follow currentColor or belong to modes listmonk doesn't use (floating, overlay, code challenge).
 - The error-state shot came from a scratch copy of `static/` with `mockerror auto="onload"` on the widget, served through listmonk-dev's `LISTMONK_STATIC_DIR`.
 - Bash `-e` gotcha in bats: in `a || { b && c; }`, a failing `b` doesn't fail the test. The refactor's mutation check caught this, and the test now uses a single `[ … ]` after the `||`.
+
+---
+## 2026-11-22 — Preferences line in the owner's words
+**What:** The preferences page's line is now the user's "Uncheck the box below and press the save button to unsubscribe." Shots: `E:\claude_review\lists_theme-prefs-wording-2.png` and `lists_theme-prefs-wording-375-2.png`, waiting for the user's OK alongside the Altcha ones.
+**Why:** The earlier line left "list." alone on a second line at desktop width, and it didn't say that unchecking needs Save.
