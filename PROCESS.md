@@ -22,3 +22,8 @@ Running log of work done with Claude Code.
   - "Your subscriptions and all associated data has been removed.", after a data wipe;
   - "No valid lists selected to subscribe.", an error.
 - The signup reply (the theme's own sentence), "Subscribed successfully." and the unsubscribe page are singular already.
+
+---
+## 2026-11-22 — Opt-in page names the list
+**What:** The user reworded the line to "Click the button below to join the CMON1975 mailing list:" and chose to drop the list's name under it, since the sentence names the list (6377a86). The lists still post back hidden. Shots: `E:\claude_review\lists_theme-optin-wording-2.png` and `lists_theme-optin-wording-375-2.png`, waiting for the user's OK.
+**Why:** With the list named in the sentence, the separate "CMON1975" line said the name twice.
