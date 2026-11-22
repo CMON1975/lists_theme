@@ -90,7 +90,10 @@ centered = (decls.get("margin-inline") == "auto"
             or decls.get("margin-left") == decls.get("margin-right") == "auto"
             or (len(margin) in (2, 3) and margin[1] == "auto"))
 sized = [p for p in decls if re.search(r"width|^flex", p)]
-print(f"no auto side margins on .captcha .altcha: {decls}" if not centered else f"sizes the box: {sized}" if sized else "")
+if not centered:
+    print(f"no auto side margins on .captcha .altcha: {decls}")
+if sized:
+    print(f".captcha .altcha sets {sized}")
 sys.exit(0 if centered and not sized else 1)
 PY
   [ "$status" -eq 0 ]
