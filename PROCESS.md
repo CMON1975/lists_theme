@@ -46,3 +46,9 @@ Running log of work done with Claude Code.
 ## 2026-11-22 — Preferences line in the owner's words
 **What:** The preferences page's line is now the user's "Uncheck the box below and press the save button to unsubscribe." Shots: `E:\claude_review\lists_theme-prefs-wording-2.png` and `lists_theme-prefs-wording-375-2.png`, waiting for the user's OK alongside the Altcha ones.
 **Why:** The earlier line left "list." alone on a second line at desktop width, and it didn't say that unchecking needs Save.
+
+---
+## 2026-11-24 — The themed Altcha box and preferences wording are live
+**What:** The user approved every shot the entries above leave waiting, and cmon1975dotcom deployed 0d53768 on 2026-11-22. Its session checked the live preferences page. On 2026-11-24 prod's `style.css` was byte-identical to this repo's.
+**Why:** Closes the open shots in this journal.
+**Notes:** listmonk's reload changes the stylesheet's `?v=`, so readers get new CSS without a hard refresh (cmon1975dotcom's runbook, "Updating the theme").
